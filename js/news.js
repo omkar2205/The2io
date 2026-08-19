@@ -54,5 +54,5 @@
     });
   }
 
-  window.The2ioNews = { render };
+  window.The2iONews = { render };
 })();
