@@ -67,3 +67,140 @@ body::after{
   color:var(--acid);
   text-shadow:0 0 8px rgba(216,255,50,.7),0 0 22px rgba(216,255,50,.35)
 }
+
+/* Severe data-mosh treatment: intentionally isolated to Unreleased */
+.rupture{
+  box-shadow:0 0 0 1px rgba(216,255,50,.08),0 0 38px rgba(0,231,255,.025),inset 0 0 70px rgba(255,31,109,.025);
+  animation:ruptureFrame 6.2s steps(1,end) infinite
+}
+.rupture::before{
+  opacity:.48;
+  background:
+    repeating-linear-gradient(90deg,transparent 0 34px,rgba(255,0,79,.22) 35px 38px,transparent 39px 76px,rgba(0,231,255,.20) 77px 81px,transparent 82px 119px),
+    repeating-linear-gradient(0deg,transparent 0 11px,rgba(255,255,255,.045) 12px 13px),
+    linear-gradient(115deg,transparent 0 36%,rgba(0,231,255,.08) 36.4% 42%,transparent 42.4% 66%,rgba(255,31,109,.075) 66.4% 72%,transparent 72.4%);
+  mix-blend-mode:screen;
+  animation:moshBg .72s steps(2,end) infinite
+}
+.rupture::after{
+  top:41%;height:84px;
+  background:
+    linear-gradient(90deg,transparent 0 6%,rgba(255,0,95,.34) 6% 17%,rgba(0,231,255,.33) 17% 31%,transparent 31% 48%,rgba(255,255,255,.10) 48% 55%,transparent 55% 100%);
+  filter:blur(.25px) saturate(1.55);
+  animation:slice 1.72s steps(1,end) infinite
+}
+.rupture.playing::before{animation-duration:.28s;opacity:.65}
+.rupture.playing::after{animation-duration:.62s;height:110px}
+.rupture.mosh-hit{animation:moshHit .36s steps(2,end) 1,ruptureFrame 6.2s steps(1,end) infinite}
+
+.rupture-visual{isolation:isolate}
+.rupture-visual>img:not(.mosh-copy){position:relative;z-index:1;animation:sourceMosh 5.1s steps(1,end) infinite;transform-origin:center}
+.mosh-copy{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;
+  z-index:2!important;pointer-events:none;mix-blend-mode:screen;opacity:0;
+  filter:grayscale(.35) contrast(1.95) brightness(.72) saturate(1.8)!important
+}
+.mosh-cyan{color:#00e7ff;animation:moshCyan 2.35s steps(1,end) infinite}
+.mosh-magenta{color:#ff1f6d;animation:moshMagenta 2.75s steps(1,end) infinite}
+.rupture.playing .mosh-cyan{animation-duration:.72s}
+.rupture.playing .mosh-magenta{animation-duration:.91s}
+
+.mosh-blocks{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden;mix-blend-mode:screen}
+.mosh-blocks i{position:absolute;display:block;height:18px;opacity:0;background:linear-gradient(90deg,#00e7ff,rgba(0,231,255,.08) 38%,#ff1f6d 72%,transparent);filter:blur(.2px)}
+.mosh-blocks i:nth-child(1){left:-8%;top:18%;width:72%;animation:blockMosh 2.9s steps(1,end) infinite}
+.mosh-blocks i:nth-child(2){left:28%;top:36%;width:86%;height:7px;animation:blockMosh 2.3s .4s steps(1,end) infinite}
+.mosh-blocks i:nth-child(3){left:-4%;top:57%;width:96%;height:38px;animation:blockMosh 3.4s .7s steps(1,end) infinite}
+.mosh-blocks i:nth-child(4){left:47%;top:72%;width:59%;height:12px;animation:blockMosh 2.6s .15s steps(1,end) infinite}
+.mosh-blocks i:nth-child(5){left:10%;top:83%;width:44%;height:5px;animation:blockMosh 3.1s .95s steps(1,end) infinite}
+.rupture.playing .mosh-blocks i{animation-duration:.78s}
+
+.glitch-title span{animation:titleJolt 3.6s steps(1,end) infinite}
+.glitch-title span::before{transform:translate(-6px,1px);opacity:.92;animation:titleCyan 1.9s steps(1,end) infinite}
+.glitch-title span::after{transform:translate(7px,-1px);opacity:.92;animation:titleMagenta 2.25s steps(1,end) infinite}
+.rupture.playing .glitch-title span{animation-duration:.84s}
+.rupture.playing .glitch-title span::before,.rupture.playing .glitch-title span::after{animation-duration:.56s}
+
+.private-player{position:relative;overflow:hidden;isolation:isolate}
+.private-player::before{
+  content:"";position:absolute;inset:-10% -5%;z-index:-1;opacity:.12;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent 0 20px,rgba(0,231,255,.12) 21px 23px,transparent 24px 37px,rgba(255,31,109,.10) 38px 40px);
+  animation:playerMosh 3.6s steps(1,end) infinite
+}
+.private-player.playing::before{opacity:.28;animation-duration:.48s}
+.private-player.playing .now-name{text-shadow:-3px 0 rgba(0,231,255,.58),3px 0 rgba(255,31,109,.55);animation:metaJitter .76s steps(1,end) infinite}
+.private-player.playing .now-meta{animation:metaJitter 1.05s steps(1,end) infinite reverse}
+
+@keyframes ruptureFrame{
+  0%,84%,100%{transform:none;filter:none}
+  85%{transform:translateX(2px);filter:contrast(1.14)}
+  86%{transform:translateX(-3px) skewX(-.35deg);filter:contrast(1.28) saturate(1.25)}
+  87%{transform:translate(1px,-1px);filter:hue-rotate(8deg) contrast(1.12)}
+  88%{transform:none;filter:none}
+}
+@keyframes moshHit{
+  0%{transform:none;filter:none}
+  25%{transform:translateX(8px) skewX(-1deg);filter:contrast(1.6) saturate(1.7)}
+  50%{transform:translateX(-11px) skewX(1.2deg);filter:hue-rotate(22deg) contrast(1.9)}
+  75%{transform:translateX(5px);filter:contrast(1.4)}
+  100%{transform:none;filter:none}
+}
+@keyframes sourceMosh{
+  0%,75%,100%{transform:none;filter:grayscale(.85) contrast(1.7) brightness(.58)}
+  76%{transform:translateX(-6px) scaleX(1.012);filter:grayscale(.45) contrast(2.25) brightness(.68)}
+  77%{transform:translateX(9px) scaleY(.994);filter:grayscale(.9) contrast(2.5) brightness(.52)}
+  78%{transform:translateX(-2px);filter:grayscale(.7) contrast(1.9) brightness(.6)}
+  79%{transform:none;filter:grayscale(.85) contrast(1.7) brightness(.58)}
+}
+@keyframes moshCyan{
+  0%,70%,100%{opacity:0;transform:none;clip-path:inset(0)}
+  71%{opacity:.62;transform:translateX(-12px);clip-path:inset(8% 0 68% 0)}
+  73%{opacity:.42;transform:translateX(7px);clip-path:inset(42% 0 35% 0)}
+  75%{opacity:.55;transform:translateX(-5px);clip-path:inset(71% 0 9% 0)}
+  77%{opacity:0}
+}
+@keyframes moshMagenta{
+  0%,62%,100%{opacity:0;transform:none;clip-path:inset(0)}
+  63%{opacity:.58;transform:translateX(11px);clip-path:inset(16% 0 59% 0)}
+  66%{opacity:.38;transform:translateX(-8px);clip-path:inset(54% 0 22% 0)}
+  69%{opacity:.52;transform:translateX(6px);clip-path:inset(79% 0 5% 0)}
+  72%{opacity:0}
+}
+@keyframes blockMosh{
+  0%,73%,100%{opacity:0;transform:translateX(0) skewX(0)}
+  74%{opacity:.68;transform:translateX(34px) skewX(-14deg)}
+  77%{opacity:.38;transform:translateX(-25px) skewX(9deg)}
+  80%{opacity:.12;transform:translateX(6px)}
+  82%{opacity:0}
+}
+@keyframes titleJolt{
+  0%,79%,100%{transform:none;letter-spacing:-.045em}
+  80%{transform:translateX(-8px) skewX(-2deg);letter-spacing:-.055em}
+  82%{transform:translateX(11px) skewX(1.5deg);letter-spacing:-.035em}
+  84%{transform:translateX(-3px)}
+  86%{transform:none;letter-spacing:-.045em}
+}
+@keyframes titleCyan{
+  0%,72%,100%{transform:translate(-6px,1px);clip-path:inset(0 0 58% 0);opacity:.82}
+  73%{transform:translate(-15px,-1px);clip-path:inset(8% 0 69% 0);opacity:1}
+  76%{transform:translate(8px,2px);clip-path:inset(44% 0 28% 0);opacity:.7}
+  79%{transform:translate(-6px,1px);clip-path:inset(0 0 58% 0);opacity:.82}
+}
+@keyframes titleMagenta{
+  0%,66%,100%{transform:translate(7px,-1px);clip-path:inset(54% 0 0 0);opacity:.82}
+  67%{transform:translate(17px,1px);clip-path:inset(18% 0 58% 0);opacity:1}
+  70%{transform:translate(-9px,-2px);clip-path:inset(66% 0 7% 0);opacity:.75}
+  73%{transform:translate(7px,-1px);clip-path:inset(54% 0 0 0);opacity:.82}
+}
+@keyframes playerMosh{
+  0%,80%,100%{transform:none}
+  81%{transform:translateY(7px) scaleY(1.02)}
+  83%{transform:translateY(-10px) scaleY(.97)}
+  86%{transform:none}
+}
+@keyframes metaJitter{
+  0%,72%,100%{transform:none}
+  73%{transform:translateX(-4px)}
+  77%{transform:translateX(5px)}
+  81%{transform:translateX(-2px)}
+  84%{transform:none}
+}
