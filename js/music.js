@@ -17,6 +17,7 @@
     const player = document.getElementById("miniSpotifyPlayer");
     const now = document.getElementById("miniSpotifyNow");
     const artistLink = document.getElementById("miniSpotifyArtistLink");
+    const monitor = document.querySelector(".released-mini-wave");
 
     if (!rows || !player || !now || !artistLink) return;
 
@@ -49,12 +50,22 @@
       rows.appendChild(button);
     });
 
+    function kickMonitor() {
+      if (!monitor) return;
+      monitor.classList.remove("track-pulse");
+      void monitor.offsetWidth;
+      monitor.classList.add("track-pulse");
+      window.clearTimeout(kickMonitor.timer);
+      kickMonitor.timer = window.setTimeout(() => monitor.classList.remove("track-pulse"), 1300);
+    }
+
     function select(button, index) {
       rows.querySelectorAll(".mini-track-row").forEach(row => row.classList.remove("active"));
       button.classList.add("active");
       const id = button.dataset.track;
       if (id) player.src = `https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0`;
       now.textContent = `SOURCE_${String(index + 1).padStart(3, "0")} // ${button.dataset.name.toUpperCase()}`;
+      kickMonitor();
     }
 
     [...rows.querySelectorAll(".mini-track-row")].forEach((button, index) => {
