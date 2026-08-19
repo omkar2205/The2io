@@ -7,52 +7,61 @@
     return url ? url[1] : text;
   };
 
-  function splitTitle(title) {
-    const words = String(title || "UNTITLED").trim().split(/\s+/);
-    if (words.length === 1) return `${words[0]}<br><span></span>`;
-    return `${words.slice(0, -1).join(" ")}<br><span>${words.at(-1)}</span>`;
-  }
-
   function render(data) {
     const release = (data.releases || [])[0];
-    const tracks = (data.tracks || []).filter(track => !release || !track.release_id || track.release_id === release.id);
-    const title = release?.title || "Faded Horizons";
-    document.getElementById("releaseTitle").innerHTML = splitTitle(title);
-    document.getElementById("releaseTrackCount").textContent = `${tracks.length} TRACK${tracks.length === 1 ? "" : "S"}`;
+    const tracks = (data.tracks || []).filter(track =>
+      !release || !track.release_id || track.release_id === release.id
+    );
 
-    const rows = document.getElementById("trackRows");
+    const rows = document.getElementById("miniTrackRows");
+    const player = document.getElementById("miniSpotifyPlayer");
+    const now = document.getElementById("miniSpotifyNow");
+    const artistLink = document.getElementById("miniSpotifyArtistLink");
+
+    if (!rows || !player || !now || !artistLink) return;
+
+    artistLink.href = data.settings?.spotify_artist_url || artistLink.href;
     rows.innerHTML = "";
+
+    if (!tracks.length) {
+      const empty = document.createElement("div");
+      empty.className = "mini-track-row";
+      empty.innerHTML = `
+        <span class="mini-track-num">000</span>
+        <span class="mini-track-name">No release loaded</span>
+        <span class="mini-track-action">STANDBY</span>`;
+      rows.appendChild(empty);
+      now.textContent = "SOURCE_000 // STANDBY";
+      player.removeAttribute("src");
+      return;
+    }
+
     tracks.forEach((track, index) => {
       const button = document.createElement("button");
-      button.className = `track-row${index === 0 ? " active" : ""}`;
       button.type = "button";
+      button.className = `mini-track-row${index === 0 ? " active" : ""}`;
       button.dataset.track = spotifyId(track.spotify_track_uri || track.spotify_url);
       button.dataset.name = track.title || `TRACK ${index + 1}`;
       button.innerHTML = `
-        <span class="track-num">${String(index + 1).padStart(3, "0")}</span>
-        <span class="track-name">${track.title || "UNTITLED"}</span>
-        <span class="track-action">PLAY SOURCE</span>`;
+        <span class="mini-track-num">${String(index + 1).padStart(3, "0")}</span>
+        <span class="mini-track-name">${track.title || "UNTITLED"}</span>
+        <span class="mini-track-action">PLAY</span>`;
       rows.appendChild(button);
     });
 
-    const player = document.getElementById("spotifyPlayer");
-    const now = document.getElementById("spotifyNow");
-    const artistLink = document.getElementById("spotifyArtistLink");
-    artistLink.href = data.settings?.spotify_artist_url || artistLink.href;
-
     function select(button, index) {
-      rows.querySelectorAll(".track-row").forEach(row => row.classList.remove("active"));
+      rows.querySelectorAll(".mini-track-row").forEach(row => row.classList.remove("active"));
       button.classList.add("active");
       const id = button.dataset.track;
       if (id) player.src = `https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0`;
       now.textContent = `SOURCE_${String(index + 1).padStart(3, "0")} // ${button.dataset.name.toUpperCase()}`;
     }
 
-    [...rows.querySelectorAll(".track-row")].forEach((button, index) => {
+    [...rows.querySelectorAll(".mini-track-row")].forEach((button, index) => {
       button.addEventListener("click", () => select(button, index));
     });
 
-    const first = rows.querySelector(".track-row");
+    const first = rows.querySelector(".mini-track-row");
     if (first) select(first, 0);
   }
 
