@@ -1,0 +1,69 @@
+/* Tactile analogue layer */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.105;mix-blend-mode:screen;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.83' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.44'/%3E%3C/svg%3E")
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.075;
+  background:repeating-linear-gradient(to bottom,transparent 0,transparent 2px,rgba(255,255,255,.019) 3px),
+  linear-gradient(90deg,transparent 0 8%,rgba(255,255,255,.018) 8.2% 8.4%,transparent 8.6% 72%,rgba(255,255,255,.014) 72.1% 72.35%,transparent 72.55%)
+}
+.cover-copy::before,.id-card::before{
+  content:"";position:absolute;inset:0;opacity:.2;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.68' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.62'/%3E%3C/svg%3E")
+}
+.contact::before{
+  content:"";position:absolute;inset:0;z-index:2;opacity:.32;mix-blend-mode:multiply;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent 0 4px,rgba(0,0,0,.055) 5px),
+  url("data:image/svg+xml,%3Csvg viewBox='0 0 130 130' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.57' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E")
+}
+
+@keyframes blink{50%{opacity:.25}}
+.rec::before{animation:blink 1.35s steps(1) infinite}
+@keyframes osc{0%,100%{transform:scaleY(.25);opacity:.35}50%{transform:scaleY(1);opacity:.9}}
+
+/* The single severe digital rupture */
+.rupture::before{
+  content:"";position:absolute;inset:0;z-index:-1;opacity:.33;
+  background:repeating-linear-gradient(90deg,transparent 0 56px,rgba(255,0,79,.16) 57px 59px,transparent 60px 103px,rgba(0,231,255,.14) 104px 106px),
+  repeating-linear-gradient(0deg,transparent 0 15px,rgba(255,255,255,.035) 16px);
+  animation:moshBg .9s steps(2,end) infinite
+}
+.rupture::after{
+  content:"";position:absolute;z-index:8;left:-6%;right:-6%;top:44%;height:60px;pointer-events:none;
+  background:linear-gradient(90deg,rgba(255,0,95,.13),rgba(0,231,255,.18),transparent 58%);
+  mix-blend-mode:screen;animation:slice 2.1s steps(1,end) infinite
+}
+.rupture.playing::after{animation-duration:1.15s}
+.rupture.playing::before{animation-duration:.52s}
+@keyframes moshBg{0%{transform:translate(0,0)}35%{transform:translate(-9px,2px)}55%{transform:translate(7px,-3px)}100%{transform:translate(0,0)}}
+@keyframes slice{
+  0%,78%,100%{transform:translateX(0) skewX(0);opacity:.15}
+  79%{transform:translateX(32px) skewX(-12deg);opacity:.85}
+  83%{transform:translateX(-18px) skewX(8deg);opacity:.65}
+  87%{transform:none;opacity:.18}
+}
+.glitch-title span::before,.glitch-title span::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none;opacity:.8}
+.glitch-title span::before{color:#00e7ff;transform:translate(-3px,1px);clip-path:inset(0 0 58% 0)}
+.glitch-title span::after{color:#ff1f6d;transform:translate(4px,-1px);clip-path:inset(54% 0 0 0)}
+@keyframes localWave{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
+
+@keyframes translationRupture{
+  0%{transform:none;filter:none}
+  25%{transform:translateX(-5px);filter:drop-shadow(4px 0 #00e7ff)}
+  50%{transform:translateX(6px);filter:drop-shadow(-4px 0 #ff1f6d)}
+  75%{transform:translateX(-2px);filter:contrast(1.45)}
+  100%{transform:none;filter:none}
+}
+
+@keyframes marqueeMove{from{transform:translateX(0)}to{transform:translateX(-34%)}}
+.marquee-track{animation:marqueeMove 18s linear infinite}
+
+.reactive-char{
+  display:inline-block;will-change:transform,text-shadow,color;
+  transition:transform .16s ease,text-shadow .16s ease,color .16s ease
+}
+.reactive-char.hot{
+  color:var(--acid);
+  text-shadow:0 0 8px rgba(216,255,50,.7),0 0 22px rgba(216,255,50,.35)
+}
