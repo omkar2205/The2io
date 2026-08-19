@@ -22,7 +22,7 @@
       <span id="topClock">00:00:00</span>
     </div>
     <nav class="nav">
-      <a href="#released">Released</a>
+      <a href="#music">Released</a>
       <a href="#archive">Archive</a>
       <a href="#unreleased">Unreleased</a>
       <a href="#about">About</a>
@@ -83,64 +83,41 @@
             </div>
           </div>
 
-          <div class="panel module monitor">
-            <div class="module-head"><span>Audio Monitor</span><span>48k</span></div>
-            <div class="monitor-screen">
-              <div class="osc" aria-hidden="true">
-                <i style="--h:18%;--d:-.2s"></i><i style="--h:34%;--d:-.5s"></i><i style="--h:62%;--d:-.7s"></i><i style="--h:42%;--d:-.3s"></i>
-                <i style="--h:76%;--d:-.8s"></i><i style="--h:54%;--d:-.1s"></i><i style="--h:90%;--d:-.6s"></i><i style="--h:34%;--d:-.4s"></i>
-                <i style="--h:67%;--d:-.9s"></i><i style="--h:44%;--d:-.25s"></i><i style="--h:83%;--d:-.55s"></i><i style="--h:29%;--d:-.7s"></i>
-                <i style="--h:72%;--d:-.15s"></i><i style="--h:51%;--d:-.85s"></i><i style="--h:88%;--d:-.35s"></i><i style="--h:38%;--d:-.65s"></i>
-                <i style="--h:59%;--d:-.1s"></i><i style="--h:31%;--d:-.45s"></i><i style="--h:79%;--d:-.75s"></i><i style="--h:46%;--d:-.3s"></i>
-                <i style="--h:92%;--d:-.82s"></i><i style="--h:55%;--d:-.52s"></i><i style="--h:68%;--d:-.22s"></i><i style="--h:26%;--d:-.62s"></i>
+          <div class="panel module released-monitor" id="music">
+            <div class="module-head"><span>Released</span><span>SPOTIFY</span></div>
+
+            <div class="released-mini-shell">
+              <div class="released-mini-wave" aria-hidden="true">
+                <i style="--h:24%;--d:-.2s"></i><i style="--h:40%;--d:-.4s"></i><i style="--h:55%;--d:-.7s"></i><i style="--h:36%;--d:-.1s"></i>
+                <i style="--h:68%;--d:-.8s"></i><i style="--h:31%;--d:-.3s"></i><i style="--h:52%;--d:-.6s"></i><i style="--h:28%;--d:-.2s"></i>
+                <i style="--h:63%;--d:-.5s"></i><i style="--h:34%;--d:-.75s"></i><i style="--h:49%;--d:-.25s"></i><i style="--h:27%;--d:-.65s"></i>
               </div>
+
+              <div class="released-mini-now">
+                <div class="released-mini-current">
+                  <small>Now Playing</small>
+                  <strong id="miniSpotifyNow">SOURCE_000 // STANDBY</strong>
+                </div>
+                <a id="miniSpotifyArtistLink" href="https://open.spotify.com/artist/3tImcBvyvtx11LEkH8CDke" target="_blank" rel="noreferrer">ARTIST ↗</a>
+              </div>
+
+              <div class="released-mini-list" id="miniTrackRows"></div>
+
+              <iframe id="miniSpotifyPlayer" title="Spotify player" loading="lazy"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
             </div>
-            <div class="monitor-foot"><div>PEAK<br><span class="acid">-02.4 dB</span></div><div>RANGE<br>20Hz-20kHz</div></div>
           </div>
 
-          <a class="jump" href="#released"><span>Open catalogue</span><span>↓</span></a>
+          <a class="jump" href="#archive"><span>Open archive</span><span>↓</span></a>
         </aside>
       </div>
     </div>
 
-    <section id="released">
-      <div class="page">
-        <div class="section-head">
-          <div class="section-index">INDEX_01<br>PUBLIC ARCHIVE</div>
-          <h2>Released</h2>
-          <div class="section-state">SOURCE // SPOTIFY</div>
-        </div>
-
-        <div class="release-grid">
-          <article class="cover-copy">
-            <div class="copy-top"><span><span class="brand-case">The2iO</span> // RELEASE_001</span><span>ARCHIVE COPY</span></div>
-            <div class="copy-title">
-              <small>Current release file</small>
-              <h3 id="releaseTitle">Faded<br><span>Horizons</span></h3>
-            </div>
-            <div class="copy-bottom"><span id="releaseTrackCount">3 TRACKS</span><span>MASTER // DIGITAL</span></div>
-          </article>
-
-          <div class="track-bank">
-            <div class="track-head"><span>REF</span><span>TITLE</span><span style="text-align:right">ACTION</span></div>
-            <div id="trackRows"></div>
-            <div class="spotify-shell">
-              <iframe id="spotifyPlayer" title="Spotify player" loading="lazy"
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-              <div class="spotify-meta">
-                <span id="spotifyNow">SOURCE_000 // STANDBY</span>
-                <a id="spotifyArtistLink" href="https://open.spotify.com/artist/3tImcBvyvtx11LEkH8CDke" target="_blank" rel="noreferrer">ARTIST ON SPOTIFY ↗</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <section id="archive">
       <div class="page">
         <div class="section-head">
-          <div class="section-index">INDEX_02<br>VISUAL MATERIAL</div>
+          <div class="section-index">INDEX_01<br>VISUAL MATERIAL</div>
           <h2>Archive</h2>
           <div class="section-state">CONTACT SHEET // LIVE SOURCE</div>
         </div>
@@ -151,7 +128,7 @@
     <section id="unreleased">
       <div class="page">
         <div class="section-head">
-          <div class="section-index">INDEX_03<br>RESTRICTED MATERIAL</div>
+          <div class="section-index">INDEX_02<br>RESTRICTED MATERIAL</div>
           <h2>Unreleased</h2>
           <div class="section-state">PUBLIC CLEARANCE ONLY</div>
         </div>
@@ -214,7 +191,7 @@
     <section id="about">
       <div class="page">
         <div class="section-head">
-          <div class="section-index">INDEX_04<br>SUBJECT RECORD</div>
+          <div class="section-index">INDEX_03<br>SUBJECT RECORD</div>
           <h2 class="reactive-title" data-reactive>About</h2>
           <div class="section-state">FILE // <span class="brand-case">The2iO</span></div>
         </div>
@@ -246,7 +223,7 @@
     <section id="contact">
       <div class="page">
         <div class="section-head">
-          <div class="section-index">INDEX_05<br>RETURN CHANNEL</div>
+          <div class="section-index">INDEX_04<br>RETURN CHANNEL</div>
           <h2>Contact</h2>
           <div class="section-state">CHANNEL // OPEN</div>
         </div>
