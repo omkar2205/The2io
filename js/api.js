@@ -1,10 +1,10 @@
 (() => {
-  const config = window.THE2IO_CONFIG || {};
-  const fallback = window.THE2IO_FALLBACK_DATA || {};
+  const config = window.The2iO_CONFIG || {};
+  const fallback = window.The2iO_FALLBACK_DATA || {};
 
   function jsonp(url) {
     return new Promise((resolve, reject) => {
-      const callback = `__the2io_cb_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      const callback = `__The2iO_cb_${Date.now()}_${Math.random().toString(36).slice(2)}`;
       const script = document.createElement("script");
       const timer = setTimeout(() => finish(new Error("api_timeout")), config.JSONP_TIMEOUT_MS || 8000);
 
@@ -41,5 +41,5 @@
     }
   }
 
-  window.The2ioAPI = { loadSiteData };
+  window.The2iOAPI = { loadSiteData };
 })();
