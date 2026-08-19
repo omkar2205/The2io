@@ -33,17 +33,18 @@
     button{color:inherit}
     ::selection{background:var(--acid);color:#050505}
 
+    /* tactile layer */
     body::before{
-      content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.17;
+      content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.065;
       mix-blend-mode:screen;
       background-image:
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.83' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.62'/%3E%3C/svg%3E");
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.83' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.30'/%3E%3C/svg%3E");
     }
     body::after{
-      content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.11;
+      content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.055;
       background:
-        repeating-linear-gradient(to bottom,transparent 0,transparent 2px,rgba(255,255,255,.028) 3px),
-        linear-gradient(90deg,transparent 0 8%,rgba(255,255,255,.025) 8.2% 8.4%,transparent 8.6% 72%,rgba(255,255,255,.02) 72.1% 72.35%,transparent 72.55%);
+        repeating-linear-gradient(to bottom,transparent 0,transparent 2px,rgba(255,255,255,.014) 3px),
+        linear-gradient(90deg,transparent 0 8%,rgba(255,255,255,.012) 8.2% 8.4%,transparent 8.6% 72%,rgba(255,255,255,.01) 72.1% 72.35%,transparent 72.55%);
     }
 
     .page{
@@ -219,6 +220,7 @@
     .section-index{font-size:8px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}
     .section-state{text-align:right;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--acid)}
 
+    /* RELEASED */
     .release-grid{display:grid;grid-template-columns:560px 1fr;gap:12px}
     .cover-copy{
       min-height:600px;padding:18px;border:1px solid var(--line2);background:var(--paper);color:#111;position:relative;overflow:hidden;
@@ -267,6 +269,7 @@
     }
     .spotify-meta a{color:#c7c6be}.spotify-meta a:hover{color:var(--acid)}
 
+    /* ARCHIVE */
     .contact-sheet{
       display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:#10100f;padding:10px;border:1px solid var(--line)
     }
@@ -279,7 +282,7 @@
       content:"";position:absolute;inset:0;opacity:.38;mix-blend-mode:multiply;
       background:
         repeating-linear-gradient(0deg,transparent 0 4px,rgba(0,0,0,.06) 5px),
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 130 130' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.57' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.62'/%3E%3C/svg%3E")
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 130 130' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.57' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.30'/%3E%3C/svg%3E")
     }
     .contact::after{
       content:"";position:absolute;width:57%;height:1px;background:#0a0a0a;left:20%;top:52%;
@@ -300,6 +303,7 @@
       margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px;color:var(--muted);font-size:8px;line-height:1.5;letter-spacing:.11em;text-transform:uppercase
     }
 
+    /* THE SINGLE DIGITAL RUPTURE */
     .rupture{
       position:relative;margin-top:8px;padding:18px;border:1px solid rgba(216,255,50,.55);overflow:hidden;background:#030303;isolation:isolate
     }
@@ -395,6 +399,7 @@
       color:#797974;font-size:7px;letter-spacing:.12em;text-transform:uppercase
     }
 
+    /* DOSSIER */
     .dossier{
       display:grid;grid-template-columns:410px 1fr;gap:12px
     }
@@ -704,6 +709,7 @@
   </main>
 
   <script>
+    // live surveillance metadata
     const two = n => String(n).padStart(2,"0");
     function tick(){
       const d = new Date();
@@ -719,6 +725,7 @@
       document.getElementById("frameCount").textContent = String(frame).padStart(6,"0");
     }, 1000/24);
 
+    // Spotify source switching
     const spotifyPlayer = document.getElementById("spotifyPlayer");
     const spotifyNow = document.getElementById("spotifyNow");
     document.querySelectorAll(".track-row").forEach((row, idx) => {
@@ -730,6 +737,7 @@
       });
     });
 
+    // Local-only unreleased player
     const input = document.getElementById("audioFiles");
     const dz = document.getElementById("dropzone");
     const audio = document.getElementById("localAudio");
@@ -787,7 +795,7 @@
       if(objectUrl) URL.revokeObjectURL(objectUrl);
       objectUrl = URL.createObjectURL(files[current]);
       audio.src = objectUrl;
-      nameEl.textContent = files[current].name.replace(/\.[^.]+$/," ").trim();
+      nameEl.textContent = files[current].name.replace(/\.[^.]+$/,"" );
       metaEl.innerHTML = `FILE_${String(current+1).padStart(3,"0")}<br>${size(files[current].size)} // LOCAL`;
       scrub.value = 0;
       currentEl.textContent = "00:00";
