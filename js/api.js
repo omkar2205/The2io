@@ -35,7 +35,7 @@
       document.documentElement.dataset.dataSource = "apps-script";
       return payload.data;
     } catch (error) {
-      console.warn("The2io backend unavailable; using local fallback data.", error);
+      console.warn("The2iO backend unavailable; using local fallback data.", error);
       document.documentElement.dataset.dataSource = "fallback";
       return fallback;
     }
