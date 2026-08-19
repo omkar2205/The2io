@@ -56,5 +56,5 @@
     if (first) select(first, 0);
   }
 
-  window.The2ioMusic = { render };
+  window.The2iOMusic = { render };
 })();
