@@ -135,5 +135,5 @@
     });
   }
 
-  window.The2ioUnreleased = { render };
+  window.The2iOUnreleased = { render };
 })();
