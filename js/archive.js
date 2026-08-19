@@ -46,7 +46,7 @@
       if (!frame.querySelector(".about-placeholder-copy")) {
         const copy = document.createElement("div");
         copy.className = "about-placeholder-copy";
-        copy.innerHTML = `<strong>IMAGE FILE</strong>UPLOAD PNG AS<br>${imagePath}`;
+        copy.innerHTML = `<strong>IMAGE FILE</strong>SUBJECT_02 // PENDING`;
         frame.appendChild(copy);
       }
     };
