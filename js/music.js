@@ -7,7 +7,76 @@
     return url ? url[1] : text;
   };
 
-  const HUD_GLYPHS = ["[♪]", "[♥]", "[☠]", "[⚡]", "[$#%!]"];
+  const STATIC_FLASHES = [
+    "$#%!",
+    "SIGNAL LOST",
+    "NOISE DETECTED",
+    "UNKNOWN",
+    "CH_02",
+    "PUBLIC SIGNAL",
+    "TRANSMISSION",
+    "NULL",
+    "ERROR",
+    "RETRY",
+    "48kHz",
+    "CAM_02",
+    "////",
+    ">_<",
+    "x_x",
+    ": /",
+    ":::",
+    "NO SIGNAL",
+    "BUFFER ERR",
+    "SOURCE UNKNOWN"
+  ];
+
+  const pad = value => String(value).padStart(2, "0");
+
+  function currentDateText() {
+    const date = new Date();
+    return `${date.getFullYear()}.${pad(date.getMonth() + 1)}.${pad(date.getDate())}`;
+  }
+
+  function currentTimeText() {
+    const date = new Date();
+    return `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+  }
+
+  function visitorCountryText() {
+    try {
+      const locale = new Intl.Locale(navigator.language || "en");
+      const region = locale.region;
+      if (region) {
+        const names = new Intl.DisplayNames([navigator.language || "en"], { type: "region" });
+        return String(names.of(region) || region).toUpperCase();
+      }
+    } catch (_) {}
+
+    const zone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+    const zoneCountry = {
+      "Asia/Calcutta": "INDIA",
+      "Asia/Kolkata": "INDIA",
+      "Europe/London": "UNITED KINGDOM",
+      "Europe/Vilnius": "LITHUANIA",
+      "Europe/Moscow": "RUSSIA",
+      "America/New_York": "USA",
+      "America/Chicago": "USA",
+      "America/Denver": "USA",
+      "America/Los_Angeles": "USA"
+    };
+    return zoneCountry[zone] || zone.replaceAll("_", " ").toUpperCase() || "LOCATION UNKNOWN";
+  }
+
+  function randomFlashText() {
+    const live = [
+      currentDateText(),
+      currentTimeText(),
+      visitorCountryText(),
+      Intl.DateTimeFormat().resolvedOptions().timeZone?.replaceAll("_", " ").toUpperCase()
+    ].filter(Boolean);
+    const pool = [...STATIC_FLASHES, ...live, ...live];
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
 
   function installHeartbeatStyles() {
     if (document.getElementById("the2ioHeartbeatStyles")) return;
@@ -33,9 +102,9 @@
         position:absolute;
         inset:0;
         z-index:0;
-        background:linear-gradient(90deg,transparent,rgba(216,255,50,.05) 45%,rgba(216,255,50,.12) 50%,rgba(216,255,50,.05) 55%,transparent);
-        transform:translateX(-110%);
-        animation:the2ioSweep 3.4s linear infinite;
+        background:linear-gradient(90deg,transparent,rgba(216,255,50,.035) 44%,rgba(216,255,50,.11) 50%,rgba(216,255,50,.035) 56%,transparent);
+        transform:translateX(-115%);
+        animation:the2ioSweep 3.6s linear infinite;
         pointer-events:none;
       }
       .released-mini-wave::after{display:none!important}
@@ -45,8 +114,8 @@
         inset:0;
         width:100%;
         height:100%;
-        overflow:visible;
         z-index:2;
+        overflow:visible;
         filter:drop-shadow(0 0 3px rgba(216,255,50,.34));
       }
       .pulse-trace{
@@ -56,8 +125,8 @@
         vector-effect:non-scaling-stroke;
         stroke-linecap:square;
         stroke-linejoin:miter;
-        opacity:.92;
-        transition:d .22s linear,opacity .18s ease,stroke-width .18s ease;
+        opacity:.94;
+        transition:opacity .12s ease,filter .12s ease;
       }
       .pulse-baseline{
         fill:none;
@@ -65,43 +134,92 @@
         stroke-width:1;
         vector-effect:non-scaling-stroke;
       }
-      .heartbeat-glyph{
+      .heartbeat-flash{
         position:absolute;
-        z-index:4;
+        z-index:6;
         left:50%;
         top:50%;
-        transform:translate(-50%,-50%) scale(.82);
-        padding:2px 4px;
-        border:1px solid rgba(216,255,50,.45);
-        background:rgba(7,7,7,.86);
+        max-width:92%;
+        transform:translate(-50%,-50%);
         color:var(--acid);
-        font:700 8px/1 var(--mono);
-        letter-spacing:.04em;
+        background:rgba(7,7,7,.9);
+        border-left:2px solid var(--acid);
+        border-right:1px solid rgba(216,255,50,.38);
+        padding:5px 8px 4px;
+        font:700 10px/1 var(--mono);
+        letter-spacing:.13em;
+        text-transform:uppercase;
         white-space:nowrap;
         opacity:0;
-        box-shadow:0 0 0 1px rgba(7,7,7,.72),0 0 10px rgba(216,255,50,.08);
         pointer-events:none;
+        text-shadow:2px 0 rgba(222,221,212,.18),-2px 0 rgba(216,255,50,.18);
       }
-      .heartbeat-glyph.show{
-        animation:hudGlyph 1.15s steps(2,end) forwards;
+      .heartbeat-flash::before,
+      .heartbeat-flash::after{
+        content:attr(data-text);
+        position:absolute;
+        inset:5px 8px 4px;
+        pointer-events:none;
+        opacity:0;
+      }
+      .heartbeat-flash::before{transform:translateX(-3px);color:#deddd4}
+      .heartbeat-flash::after{transform:translateX(3px);color:var(--acid)}
+      .released-mini-wave.flash-active .heartbeat-flash{
+        opacity:1;
+        animation:heartbeatTextGlitch .42s steps(2,end) both;
+      }
+      .released-mini-wave.flash-active .heartbeat-flash::before{
+        opacity:.48;
+        animation:heartbeatGhostA .42s steps(2,end) both;
+      }
+      .released-mini-wave.flash-active .heartbeat-flash::after{
+        opacity:.42;
+        animation:heartbeatGhostB .42s steps(2,end) both;
+      }
+      .released-mini-wave.flash-active .pulse-svg{
+        animation:heartbeatSignalBreak .42s steps(2,end) both;
+      }
+      .released-mini-wave.flash-active::before{
+        animation:heartbeatScanBreak .42s steps(2,end) both;
       }
       .released-mini-wave.track-pulse .pulse-trace{
         stroke-width:2;
         opacity:1;
-        filter:drop-shadow(0 0 5px rgba(216,255,50,.72));
-      }
-      .released-mini-wave.track-pulse{
-        box-shadow:inset 0 0 18px rgba(216,255,50,.045);
+        filter:drop-shadow(0 0 5px rgba(216,255,50,.7));
       }
       @keyframes the2ioSweep{
-        to{transform:translateX(110%)}
+        to{transform:translateX(115%)}
       }
-      @keyframes hudGlyph{
-        0%{opacity:0;transform:translate(-50%,-50%) scale(.72)}
-        12%{opacity:1;transform:translate(-50%,-50%) scale(1)}
-        62%{opacity:.92;transform:translate(-50%,-50%) scale(1)}
-        78%{opacity:.25;transform:translate(calc(-50% + 2px),calc(-50% - 1px)) scale(.96)}
-        100%{opacity:0;transform:translate(-50%,-50%) scale(.84)}
+      @keyframes heartbeatTextGlitch{
+        0%{transform:translate(-50%,-50%);filter:none}
+        18%{transform:translate(calc(-50% - 5px),calc(-50% + 1px));filter:contrast(1.6)}
+        36%{transform:translate(calc(-50% + 7px),calc(-50% - 2px));letter-spacing:.18em}
+        54%{transform:translate(calc(-50% - 2px),-50%);filter:brightness(1.45)}
+        72%{transform:translate(calc(-50% + 3px),calc(-50% + 1px));letter-spacing:.1em}
+        100%{transform:translate(-50%,-50%);filter:none}
+      }
+      @keyframes heartbeatGhostA{
+        0%,100%{clip-path:inset(0 0 72% 0);transform:translateX(-3px)}
+        35%{clip-path:inset(36% 0 38% 0);transform:translateX(5px)}
+        68%{clip-path:inset(72% 0 0 0);transform:translateX(-5px)}
+      }
+      @keyframes heartbeatGhostB{
+        0%,100%{clip-path:inset(68% 0 0 0);transform:translateX(3px)}
+        30%{clip-path:inset(12% 0 66% 0);transform:translateX(-6px)}
+        64%{clip-path:inset(45% 0 31% 0);transform:translateX(7px)}
+      }
+      @keyframes heartbeatSignalBreak{
+        0%,100%{transform:none;opacity:.94}
+        20%{transform:translateX(-7px) scaleX(1.015);opacity:.42}
+        42%{transform:translateX(10px) scaleY(.9);opacity:.18}
+        64%{transform:translateX(-3px);opacity:.5}
+        82%{transform:translateX(3px);opacity:.72}
+      }
+      @keyframes heartbeatScanBreak{
+        0%{transform:translateX(-70%);opacity:.1}
+        35%{transform:translateX(18%);opacity:.34}
+        70%{transform:translateX(-10%);opacity:.2}
+        100%{transform:translateX(70%);opacity:.06}
       }
     `;
     document.head.appendChild(style);
@@ -113,30 +231,28 @@
     let d = `M 0 ${baseline}`;
 
     while (x < 1000) {
-      const idle = 65 + Math.random() * 55;
+      const idle = 52 + Math.random() * 72;
       const start = Math.min(1000, x + idle);
       d += ` L ${start.toFixed(1)} ${baseline}`;
       if (start >= 985) break;
 
-      const smallUp = baseline - (4 + Math.random() * 5);
-      const smallDown = baseline + (7 + Math.random() * 8);
-      const peak = 7 + Math.random() * 10;
-      const trough = 62 + Math.random() * 10;
-      const settle = baseline - (3 + Math.random() * 4);
+      const peak = 6 + Math.random() * 11;
+      const trough = 60 + Math.random() * 13;
+      const shoulder = baseline - (4 + Math.random() * 6);
+      const dip = baseline + (5 + Math.random() * 8);
 
-      d += ` L ${(start + 10).toFixed(1)} ${baseline}`;
-      d += ` L ${(start + 17).toFixed(1)} ${smallUp.toFixed(1)}`;
-      d += ` L ${(start + 25).toFixed(1)} ${smallDown.toFixed(1)}`;
-      d += ` L ${(start + 34).toFixed(1)} ${peak.toFixed(1)}`;
-      d += ` L ${(start + 45).toFixed(1)} ${trough.toFixed(1)}`;
-      d += ` L ${(start + 57).toFixed(1)} ${settle.toFixed(1)}`;
-      d += ` L ${(start + 70).toFixed(1)} ${baseline}`;
+      d += ` L ${(start + 8).toFixed(1)} ${baseline}`;
+      d += ` L ${(start + 15).toFixed(1)} ${shoulder.toFixed(1)}`;
+      d += ` L ${(start + 23).toFixed(1)} ${dip.toFixed(1)}`;
+      d += ` L ${(start + 31).toFixed(1)} ${peak.toFixed(1)}`;
+      d += ` L ${(start + 42).toFixed(1)} ${trough.toFixed(1)}`;
+      d += ` L ${(start + 54).toFixed(1)} ${(baseline - 3 - Math.random() * 4).toFixed(1)}`;
+      d += ` L ${(start + 68).toFixed(1)} ${baseline}`;
 
-      x = start + 70 + Math.random() * 65;
+      x = start + 68 + Math.random() * 70;
     }
 
-    d += ` L 1000 ${baseline}`;
-    return d;
+    return `${d} L 1000 ${baseline}`;
   }
 
   function setupHeartbeat(monitor) {
@@ -148,39 +264,47 @@
         <path class="pulse-baseline" d="M0 40 L1000 40"></path>
         <path class="pulse-trace"></path>
       </svg>
-      <span class="heartbeat-glyph" aria-hidden="true">[♪]</span>`;
+      <span class="heartbeat-flash" data-text="" aria-hidden="true"></span>`;
 
     const trace = monitor.querySelector(".pulse-trace");
-    const glyph = monitor.querySelector(".heartbeat-glyph");
-    let pathTimer;
-    let glyphTimer;
+    const flash = monitor.querySelector(".heartbeat-flash");
+    let pulseTimer;
+    let cycleTimer;
+    let clearFlashTimer;
 
-    const refreshPath = () => {
+    const refreshPulse = () => {
       trace.setAttribute("d", buildHeartbeatPath());
-      window.clearTimeout(pathTimer);
-      pathTimer = window.setTimeout(refreshPath, 2100 + Math.random() * 1700);
+      window.clearTimeout(pulseTimer);
+      pulseTimer = window.setTimeout(refreshPulse, 900 + Math.random() * 700);
     };
 
-    const showGlyph = forced => {
-      const text = forced || HUD_GLYPHS[Math.floor(Math.random() * HUD_GLYPHS.length)];
-      glyph.textContent = text;
-      glyph.style.left = `${15 + Math.random() * 70}%`;
-      glyph.style.top = `${23 + Math.random() * 54}%`;
-      glyph.classList.remove("show");
-      void glyph.offsetWidth;
-      glyph.classList.add("show");
+    const flashTransmission = forcedText => {
+      const text = forcedText || randomFlashText();
+      flash.textContent = text;
+      flash.dataset.text = text;
+      flash.style.left = `${42 + Math.random() * 16}%`;
+      flash.style.top = `${43 + Math.random() * 14}%`;
+
+      monitor.classList.remove("flash-active");
+      void monitor.offsetWidth;
+      monitor.classList.add("flash-active");
+
+      window.clearTimeout(clearFlashTimer);
+      clearFlashTimer = window.setTimeout(() => {
+        monitor.classList.remove("flash-active");
+      }, 330 + Math.random() * 260);
     };
 
-    const scheduleGlyph = () => {
-      window.clearTimeout(glyphTimer);
-      glyphTimer = window.setTimeout(() => {
-        showGlyph();
-        scheduleGlyph();
-      }, 1900 + Math.random() * 3600);
+    const scheduleCycle = () => {
+      window.clearTimeout(cycleTimer);
+      cycleTimer = window.setTimeout(() => {
+        flashTransmission();
+        scheduleCycle();
+      }, 1000 + Math.random() * 1000);
     };
 
-    refreshPath();
-    scheduleGlyph();
+    refreshPulse();
+    scheduleCycle();
 
     return {
       kick() {
@@ -188,9 +312,8 @@
         void monitor.offsetWidth;
         monitor.classList.add("track-pulse");
         trace.setAttribute("d", buildHeartbeatPath());
-        showGlyph();
         window.clearTimeout(this.kickTimer);
-        this.kickTimer = window.setTimeout(() => monitor.classList.remove("track-pulse"), 950);
+        this.kickTimer = window.setTimeout(() => monitor.classList.remove("track-pulse"), 620);
       }
     };
   }
