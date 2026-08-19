@@ -34,6 +34,8 @@
     const refEl = document.getElementById("unreleasedRef");
     const statusEl = document.getElementById("unreleasedStatus");
     const artwork = document.getElementById("unreleasedArtwork");
+    const artworkCopies = Array.from(document.querySelectorAll("[data-mosh-artwork]"));
+    const fallbackArtwork = artwork?.getAttribute("src") || "";
     let current = -1;
 
     const setDisabled = disabled => {
@@ -74,7 +76,12 @@
       metaEl.innerHTML = `FILE_${String(current + 1).padStart(3, "0")}<br>${track.version || "UNRELEASED"}`;
       refEl.textContent = `FILE_${String(current + 1).padStart(3, "0")}`;
       statusEl.textContent = track.public_note || "UNRELEASED";
-      if (track.artwork_url) artwork.src = track.artwork_url;
+      const artworkSrc = track.artwork_url || fallbackArtwork;
+      if (artwork && artworkSrc) artwork.src = artworkSrc;
+      artworkCopies.forEach(copy => { if (artworkSrc) copy.src = artworkSrc; });
+      rupture.classList.remove("mosh-hit");
+      void rupture.offsetWidth;
+      rupture.classList.add("mosh-hit");
       scrub.value = 0;
       currentEl.textContent = "00:00";
       durationEl.textContent = "00:00";
