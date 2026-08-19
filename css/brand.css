@@ -1,3 +1,9 @@
 .brand-case{
   text-transform:none!important;
 }
+
+.contact-word{
+  white-space:nowrap;
+  font-size:68px!important;
+  letter-spacing:-.045em;
+}
