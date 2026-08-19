@@ -347,7 +347,7 @@
             scheduleCycle();
           }, 720);
         }, 180);
-      }, 5000);
+      }, 3000);
     };
 
     scheduleCycle();
