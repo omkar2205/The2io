@@ -45,3 +45,8 @@ body:not(.site-loaded)>:not(.site-loader){
   color:var(--acid);
   text-shadow:0 0 8px rgba(216,255,50,.6),0 0 22px rgba(216,255,50,.28);
 }
+
+@media (max-width:699px){
+  .contact-word{font-size:clamp(48px,17vw,60px)!important}
+  .site-loader-word{font-size:clamp(58px,18vw,86px)}
+}
