@@ -26,8 +26,12 @@
     const visual = gallery[0]?.image_url || "";
     hero.src = gallery[5]?.image_url || visual;
     about.src = gallery[3]?.image_url || visual;
-    rupture.src = gallery[1]?.image_url || visual;
+    const ruptureSrc = gallery[1]?.image_url || visual || rupture.getAttribute("src") || "";
+    if (ruptureSrc) {
+      rupture.src = ruptureSrc;
+      document.querySelectorAll("[data-mosh-artwork]").forEach(copy => copy.src = ruptureSrc);
+    }
   }
 
-  window.The2ioArchive = { render };
+  window.The2iOArchive = { render };
 })();
