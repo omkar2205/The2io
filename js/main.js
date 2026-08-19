@@ -65,13 +65,13 @@
       document.getElementById("frameCount").textContent = String(frame).padStart(6, "0");
     }, 1000 / 24);
 
-    const data = await window.The2ioAPI.loadSiteData();
-    window.The2ioMusic.render(data);
-    window.The2ioArchive.render(data);
-    window.The2ioUnreleased.render(data);
-    window.The2ioTranslations.render(data);
-    window.The2ioNews.render(data);
-    window.The2ioContact.render(data);
+    const data = await window.The2iOAPI.loadSiteData();
+    window.The2iOMusic.render(data);
+    window.The2iOArchive.render(data);
+    window.The2iOUnreleased.render(data);
+    window.The2iOTranslations.render(data);
+    window.The2iONews.render(data);
+    window.The2iOContact.render(data);
 
     const settings = data.settings || {};
     document.getElementById("navInstagram").href = settings.instagram_url || document.getElementById("navInstagram").href;
@@ -82,6 +82,6 @@
     document.addEventListener("mousemove", reactiveMotion, { passive: true });
   }
 
-  window.The2ioMain = { refreshReactive };
+  window.The2iOMain = { refreshReactive };
   document.addEventListener("DOMContentLoaded", init);
 })();
