@@ -73,7 +73,7 @@
       nameEl.textContent = track.title || "UNTITLED";
       metaEl.innerHTML = `FILE_${String(current + 1).padStart(3, "0")}<br>${track.version || "UNRELEASED"}`;
       refEl.textContent = `FILE_${String(current + 1).padStart(3, "0")}`;
-      statusEl.textContent = track.rights_note || "UNRELEASED";
+      statusEl.textContent = track.public_note || "UNRELEASED";
       if (track.artwork_url) artwork.src = track.artwork_url;
       scrub.value = 0;
       currentEl.textContent = "00:00";
