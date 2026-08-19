@@ -7,3 +7,41 @@
   font-size:68px!important;
   letter-spacing:-.045em;
 }
+
+body:not(.site-loaded)>:not(.site-loader){
+  visibility:hidden;
+}
+
+.site-loader{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:grid;
+  place-items:center;
+  background:#070707;
+  opacity:1;
+  visibility:visible;
+  transition:opacity .18s ease,visibility 0s linear .18s;
+}
+
+.site-loader.is-ready{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+
+.site-loader-word{
+  margin:0;
+  font-family:var(--cond);
+  font-size:clamp(72px,7vw,118px);
+  font-weight:900;
+  line-height:.8;
+  letter-spacing:-.055em;
+  color:var(--paper);
+  white-space:nowrap;
+}
+
+.site-loader-word .site-loader-two{
+  color:var(--acid);
+  text-shadow:0 0 8px rgba(216,255,50,.6),0 0 22px rgba(216,255,50,.28);
+}
