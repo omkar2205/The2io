@@ -32,7 +32,7 @@
       copy.classList.add("translating");
       copy.replaceChildren(linkedText(item.about_text));
       toggle.querySelectorAll("button").forEach(button => button.classList.toggle("active", button.dataset.lang === current));
-      setTimeout(() => window.The2ioMain?.refreshReactive?.(), 0);
+      setTimeout(() => window.The2iOMain?.refreshReactive?.(), 0);
     }
 
     toggle.innerHTML = "";
@@ -65,5 +65,5 @@
     show(current);
   }
 
-  window.The2ioTranslations = { render };
+  window.The2iOTranslations = { render };
 })();
