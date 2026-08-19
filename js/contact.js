@@ -3,7 +3,7 @@
     const form = document.getElementById("contactForm");
     const status = document.getElementById("contactStatus");
     const settings = data.settings || {};
-    const config = window.THE2IO_CONFIG || {};
+    const config = window.The2iO_CONFIG || {};
     const socials = document.getElementById("contactSocials");
 
     socials.innerHTML = "";
@@ -44,5 +44,5 @@
     });
   }
 
-  window.The2ioContact = { render };
+  window.The2iOContact = { render };
 })();
