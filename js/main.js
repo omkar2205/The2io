@@ -75,7 +75,7 @@
 
     const settings = data.settings || {};
     document.getElementById("navInstagram").href = settings.instagram_url || document.getElementById("navInstagram").href;
-    document.getElementById("subjectAlias").textContent = settings.artist_display || "THE2IO";
+    document.getElementById("subjectAlias").textContent = settings.artist_display || "The2iO";
     document.getElementById("heroCaption").textContent = settings.artist_subtitle ? `Music by Ilya. ${settings.artist_subtitle}.` : "Music by Ilya.";
 
     refreshReactive();
