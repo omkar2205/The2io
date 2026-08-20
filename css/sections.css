@@ -207,7 +207,7 @@
   .contact{aspect-ratio:1.18/1}
   .rupture{padding:10px}
   .rupture-top{gap:10px;font-size:7px;letter-spacing:.1em;flex-wrap:wrap}
-  .glitch-title{margin:26px 0 20px;font-size:clamp(46px,15vw,64px)}
+  .glitch-title{margin:24px 0 18px;font-size:clamp(38px,12vw,54px);line-height:.82}
   .unreleased-layout{grid-template-columns:1fr}
   .rupture-visual{min-height:300px}
   .private-player{min-height:0;padding:13px}
